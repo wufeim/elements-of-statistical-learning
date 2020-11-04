@@ -5,4 +5,4 @@
    :maxdepth: 2
    
    chapter3-1
-   chatper3-2
+   chapter3-2
