@@ -6,4 +6,8 @@ Notes for Elements of Statistical Learning
 
    chapter-3
 
-Author: *Mofii*
+Contributor(s): Mofii
+
+I created a ESL study group on Douban. Come join us!
+
+.. images:: images/douban.JPG
