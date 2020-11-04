@@ -8,9 +8,8 @@ Welcome to ESL Notes's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   c3-2
+   chapter-3
 
 
 
