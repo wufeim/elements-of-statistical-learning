@@ -14,7 +14,7 @@ This is the notes for Elements of Statistical Learning. Contributions are welcom
 I created a ESL study group on Douban. Come join us!
 
 .. image:: images/douban.JPG
-   :width: 320pt
+   :width: 280pt
 
 Contributors
 =====================================
