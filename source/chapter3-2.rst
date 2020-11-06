@@ -48,6 +48,7 @@ Considering :math:`\mathbf{X}` to be fixed, this is a linear function :math:`\ma
 
   \text{E}(a^\top\hat{\beta}) & = \text{E}(a^\top (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}) \nonumber \\
 	& = a^\top (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top \text{E}(\mathbf{y}) \nonumber \\
+  & = a^\top (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top \mathbf{X}\beta \nonumber \\
 	& = a^\top \beta
 
 *The Gauss-Markov theorem* states that if we have any other linear estimator :math:`\tilde{\theta} = \mathbf{c}^\top\mathbf{y}` that is unbiased for :math:`a^\top\beta`, that is :math:`\text{E}(\mathbf{c}^\top\mathbf{y}) = a^\top\beta`, then
@@ -70,7 +71,7 @@ Consider the mean squared error of an estimator :math:`\tilde{\theta}` in estima
 
 The first term is the variance, while the second term is the squared bias.
 
-The Gauss-Markov theorem implies that the least squares estimator has the smallest mean squared error of all linear estimators with no bias. However, there may well exist a biased estimators with smaller mean squared error. Such an estimator would trade a little bias for a larger reduction in variance. We discuss many examples, including variable subset selection and ridge regression, later in this chapter. From a more pragmatic point of view, most models are distortions of the truth, and hence are biased; picking the right model amounts to creating the right balance between bias and variance.
+The Gauss-Markov theorem implies that the least squares estimator has the smallest mean squared error of all linear estimators with no bias. However, there may well exist a biased estimators with smaller mean squared error. Such an estimator would trade a little bias for a larger reduction in variance. We discuss many examples, including variable subset selection and ridge regression, later in this chapter. **From a more pragmatic point of view, most models are distortions of the truth, and hence are biased; picking the right model amounts to creating the right balance between bias and variance.**
 
 Consider the prediction of the new response at input :math:`x_0`,
 
