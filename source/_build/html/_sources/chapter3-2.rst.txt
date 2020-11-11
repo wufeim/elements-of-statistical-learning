@@ -135,7 +135,7 @@ If the errors :math:`\varepsilon = (\varepsilon_1, \dots, \varepsilon_K)` are co
 
   Explain this.
 
-arises naturally from multivariate Gaussian theory. However, it can be shown again the solution is given by Equation :ref:`eq3.39` (Exercise 3.11). If :math:`\mathbf{\Sigma}_i` vary among observations, then this is no longer the case and the solution for :math:`\mathbf{B}` no longer decouples.
+arises naturally from multivariate Gaussian theory. However, it can be shown again the solution is given by Equation :ref:`eq3.39` (Exercise 3.11). If :math:`\mathbf{\Sigma}_i` vary among observations, then this is no longer the case and the solution for $\mathbf{B}$ no longer decouples.
 
 .. warning::
 

@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+
+<html lang="cn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.2 Linear Regression Models and Least Squares &#8212; ESL Notes 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="3.1 Introduction" href="chapter3-1.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="chapter3-1.html" title="3.1 Introduction"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="chapter-3.html" accesskey="U">3 Linear Methods for Regression</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">3.2 Linear Regression Models and Least Squares</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="linear-regression-models-and-least-squares">
+<h1>3.2 Linear Regression Models and Least Squares<a class="headerlink" href="#linear-regression-models-and-least-squares" title="Permalink to this headline">¶</a></h1>
+<p>We have an input vector <span class="math notranslate nohighlight">\(X^\top = (X_1, \dots, X_p)\)</span>, we want to predict a real-valued output <span class="math notranslate nohighlight">\(Y\)</span>. The linear regression model has the form</p>
+<div class="math notranslate nohighlight">
+\[f(X) = \beta_0 + \sum_{j=1}^p X_j\beta_j\]</div>
+<p>Here <span class="math notranslate nohighlight">\(X_j\)</span> can be quantitative inputs, transformations of quantitative inputs, or numerical encoding of qualitative inputs.</p>
+<p>Typically we have a set of training data <span class="math notranslate nohighlight">\((x_1, y_1), \dots, (x_N, y_N)\)</span> from which to estimate the parameters :math`beta`. The most popular estimation method is <em>least squares</em>, in which we pick the coefficients <span class="math notranslate nohighlight">\(\beta = (\beta_0, \dots, \beta_p)^\top\)</span> to minimize the residual sum of squares</p>
+<div class="math notranslate nohighlight">
+\[\text{RSS}(\beta) = \sum_{i=1}^N (y_i - f(x_i))^2 = \sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2\]</div>
+<p>From a statistical point of view, this criterion is reasonable if the training observations $(x_i, y_i)$ represent independent draws from their population. Even if the <span class="math notranslate nohighlight">\(x_i\)</span>'s were not drawn randomly, the criterion is still valid if the <span class="math notranslate nohighlight">\(y_i\)</span>'s are conditionally independent given the inputs <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> be the matrix representation of the training data. We can write the residual sum-of-squares as</p>
+<div class="math notranslate nohighlight">
+\[RSS(\beta) = (\mathbf{y} - \mathbf{X}\beta)^\top (\mathbf{y} - \mathbf{X}\beta)\]</div>
+<p>Differentiating w.r.t. <span class="math notranslate nohighlight">\(\beta\)</span> we obtain</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial \text{RSS}}{\partial \beta} &amp; = -2\mathbf{X}^\top (\mathbf{y} - \mathbf{X}\beta) \\
+\frac{\partial^2 \text{RSS}}{\partial\beta\partial\beta^\top} &amp; = 2\mathbf{X}^\top\mathbf{X}\end{split}\]</div>
+<div class="section" id="example-prostate-cancer">
+<h2>3.2.1 Example: Prostate Cancer<a class="headerlink" href="#example-prostate-cancer" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="the-gauss-markov-theorem">
+<h2>3.2.2 The Gauss-Markov Theorem<a class="headerlink" href="#the-gauss-markov-theorem" title="Permalink to this headline">¶</a></h2>
+<p>We focus on estimation of any linear combination of the parameters <span class="math notranslate nohighlight">\(\theta = a^\top\beta\)</span>. The least squares estimate of <span class="math notranslate nohighlight">\(a^\top\beta\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\hat{\theta} = a^\top\hat{\beta} = a^\top (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top \mathbf{y}\]</div>
+<p>Considering <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> to be fixed, this is a linear function <span class="math notranslate nohighlight">\(\mathbf{c}_0^\top\mathbf{y}\)</span> of the response vector <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>. If we assume that the linear model is correct, <span class="math notranslate nohighlight">\(a^\top\hat{\beta}\)</span> is unbiased since</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{E}(a^\top\hat{\beta}) &amp; = \text{E}(a^\top (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}) \nonumber \\
+      &amp; = a^\top (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top \text{E}(\mathbf{y}) \nonumber \\
+&amp; = a^\top (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top \mathbf{X}\beta \nonumber \\
+      &amp; = a^\top \beta\end{split}\]</div>
+<p><em>The Gauss-Markov theorem</em> states that if we have any other linear estimator <span class="math notranslate nohighlight">\(\tilde{\theta} = \mathbf{c}^\top\mathbf{y}\)</span> that is unbiased for <span class="math notranslate nohighlight">\(a^\top\beta\)</span>, that is <span class="math notranslate nohighlight">\(\text{E}(\mathbf{c}^\top\mathbf{y}) = a^\top\beta\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\text{Var}(a^\top\hat{\beta}) \leq \text{Var}(\mathbf{c}^\top\mathbf{y})\]</div>
+<p>For simplicity we have stated the result in terms of estimation of a single parameter <span class="math notranslate nohighlight">\(a^\top\beta\)</span>. The proof is left as Exercise 3.3.</p>
+<p>Consider the mean squared error of an estimator <span class="math notranslate nohighlight">\(\tilde{\theta}\)</span> in estimating <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{MSE}(\tilde{\theta}) &amp; = \text{E}(\tilde{\theta} - \theta)^2 \nonumber \\
+      &amp; = \text{E}(\tilde{\theta} - \text{E}(\tilde{\theta}) + \text{E}(\tilde{\theta}) - \theta)^2 \nonumber \\
+      &amp; = \text{E}\left[(\tilde{\theta} - \text{E}(\tilde{\theta}))^2 + 2 (\tilde{\theta} - \text{E}(\tilde{\theta}))(\text{E}(\tilde{\theta}) - \theta) + (\text{E}(\tilde{\theta}) - \theta)^2 \right] \nonumber \\
+      &amp; = \text{E}(\tilde{\theta} - \text{E}(\tilde{\theta}))^2 + 2 (\text{E}(\tilde{\theta}) - \theta) \text{E}(\tilde{\theta} - \text{E}(\tilde{\theta})) + [\text{E}(\tilde{\theta}) - \theta]^2 \nonumber \\
+      &amp; = \text{Var}(\tilde{\theta}) + [\text{E}(\tilde{\theta}) - \theta]^2\end{split}\]</div>
+<p>The first term is the variance, while the second term is the squared bias.</p>
+<p>The Gauss-Markov theorem implies that the least squares estimator has the smallest mean squared error of all linear estimators with no bias. However, there may well exist a biased estimators with smaller mean squared error. Such an estimator would trade a little bias for a larger reduction in variance. We discuss many examples, including variable subset selection and ridge regression, later in this chapter. <strong>From a more pragmatic point of view, most models are distortions of the truth, and hence are biased; picking the right model amounts to creating the right balance between bias and variance.</strong></p>
+<p>Consider the prediction of the new response at input <span class="math notranslate nohighlight">\(x_0\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[Y_0 = f(x_0) + \varepsilon_0\]</div>
+<p>Then the expected prediction error of an estimate <span class="math notranslate nohighlight">\(\tilde{f}(x_0) = x_0^\top \tilde{\beta}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{E}(Y_0 - \tilde{f}(x_0))^2 &amp; = \text{E}(f(x_0) + \varepsilon_0 - x_0^\top \tilde{\beta})^2 \nonumber \\
+      &amp; = \text{E}(\varepsilon_0^2) + 2\text{E}(\varepsilon_0(f(x_0) - x_0^\top\tilde{\beta})) + \text{E}(x_0^\top\tilde{\beta} - f(x_0))^2 \nonumber \\
+      &amp; = \sigma^2 + \text{E}(x_0^\top\tilde{\beta} - f(x_0))^2 \nonumber \\
+      &amp; = \sigma^2 + \text{MSE}(\tilde{f}(x_0))\end{split}\]</div>
+<p>Therefore, expected prediction error and mean squared error differ only by the constant <span class="math notranslate nohighlight">\(\sigma^2\)</span>, representing the variance of the new observation <span class="math notranslate nohighlight">\(y_0\)</span>.</p>
+</div>
+<div class="section" id="multiple-regression-from-simple-univariate-regression">
+<h2>Multiple Regression from Simple Univariate Regression<a class="headerlink" href="#multiple-regression-from-simple-univariate-regression" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="multiple-outputs">
+<h2>Multiple Outputs<a class="headerlink" href="#multiple-outputs" title="Permalink to this headline">¶</a></h2>
+<p>Suppose we have multiple outputs <span class="math notranslate nohighlight">\(Y_1, \dots, Y_K\)</span> that we wish to predict from our inputs <span class="math notranslate nohighlight">\(X_0, \dots, X_p\)</span>. We assume a linear model for each output</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}Y_k &amp; = \beta_{0k} + \sum_{j=1}^p X_j\beta_{jk} + \varepsilon_k \\
+      &amp; = f_k(X) + \varepsilon_k\end{split}\]</div>
+<p>With <span class="math notranslate nohighlight">\(N\)</span> training cases we can write the model in matrix notation</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{Y} = \mathbf{XB} + \mathbf{E}\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> is the <span class="math notranslate nohighlight">\(N \times K\)</span> response matrix, <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is the <span class="math notranslate nohighlight">\(N \times (p + 1)\)</span> input matrix, <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> is the <span class="math notranslate nohighlight">\((p + 1) \times K\)</span> matrix of parameters, and <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> is the <span class="math notranslate nohighlight">\(N \times K\)</span> matrix of errors. A straightforward generalization of the univariate loss function is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{RSS}(\mathbf{B}) &amp; = \sum_{k=1}^K \sum_{i=1}^N (y_{ik} - f_k(x_i))^2 \\
+      &amp; = \text{tr}[(\mathbf{Y} - \mathbf{XB})^\top (\mathbf{Y} - \mathbf{XB})]\end{split}\]</div>
+<p>The least squares estimates have the same form as before</p>
+<div class="math notranslate nohighlight" id="equation-eq3-39">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq3-39" title="Permalink to this equation">¶</a></span>\[\hat{\mathbf{B}} = (\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X^\top Y}\]</div>
+<p>Multiple outputs do not affect one another's least squares estimates.</p>
+<p>If the errors <span class="math notranslate nohighlight">\(\varepsilon = (\varepsilon_1, \dots, \varepsilon_K)\)</span> are correlated, then it might seem appropriate to modify RSS in favor of a multivariate version. Specifically, suppose <span class="math notranslate nohighlight">\(\text{Cov}(\varepsilon) = \mathbf{\Sigma}\)</span>, then the multivariate weighted criterion</p>
+<div class="math notranslate nohighlight">
+\[\text{RSS}(\mathbf{B}, \mathbf{\Sigma}) = \sum_{i=1}^N (y_i - f(x_i))^\top \mathbf{\Sigma}^{-1}(y_i - f(x_i))\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Explain this.</p>
+</div>
+<p>arises naturally from multivariate Gaussian theory. However, it can be shown again the solution is given by Equation <span class="xref std std-ref">eq3.39</span> (Exercise 3.11). If <span class="math notranslate nohighlight">\(\mathbf{\Sigma}_i\)</span> vary among observations, then this is no longer the case and the solution for $mathbf{B}$ no longer decouples.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Add solution to Exercise 3.11.</p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.2 Linear Regression Models and Least Squares</a><ul>
+<li><a class="reference internal" href="#example-prostate-cancer">3.2.1 Example: Prostate Cancer</a></li>
+<li><a class="reference internal" href="#the-gauss-markov-theorem">3.2.2 The Gauss-Markov Theorem</a></li>
+<li><a class="reference internal" href="#multiple-regression-from-simple-univariate-regression">Multiple Regression from Simple Univariate Regression</a></li>
+<li><a class="reference internal" href="#multiple-outputs">Multiple Outputs</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="chapter3-1.html"
+                        title="previous chapter">3.1 Introduction</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/chapter3-2.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="chapter3-1.html" title="3.1 Introduction"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="chapter-3.html" >3 Linear Methods for Regression</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">3.2 Linear Regression Models and Least Squares</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Mofii.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>
