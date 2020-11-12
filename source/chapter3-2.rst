@@ -129,7 +129,7 @@ If the errors :math:`\varepsilon = (\varepsilon_1, \dots, \varepsilon_K)` are co
 
 .. math::
 
-  \text{RSS}(\mathbf{B}, \mathbf{\Sigma}) = \sum_{i=1}^N (y_i - f(x_i))^\top \mathbf{\Sigma}^{-1}(y_i - f(x_i))
+  \text{RSS}(\mathbf{B}; \mathbf{\Sigma}) = \sum_{i=1}^N (y_i - f(x_i))^\top \mathbf{\Sigma}^{-1}(y_i - f(x_i))
 
 .. warning::
 
