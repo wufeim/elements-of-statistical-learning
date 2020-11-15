@@ -18,6 +18,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="A Solution Manual" href="exercise-solutions.html" />
     <link rel="prev" title="3.1 Introduction" href="chapter3-1.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -26,6 +27,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="exercise-solutions.html" title="A Solution Manual"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="chapter3-1.html" title="3.1 Introduction"
              accesskey="P">previous</a> |</li>
@@ -117,12 +121,8 @@
 <p>Multiple outputs do not affect one another's least squares estimates.</p>
 <p>If the errors <span class="math notranslate nohighlight">\(\varepsilon = (\varepsilon_1, \dots, \varepsilon_K)\)</span> are correlated, then it might seem appropriate to modify RSS in favor of a multivariate version. Specifically, suppose <span class="math notranslate nohighlight">\(\text{Cov}(\varepsilon) = \mathbf{\Sigma}\)</span>, then the multivariate weighted criterion</p>
 <div class="math notranslate nohighlight">
-\[\text{RSS}(\mathbf{B}, \mathbf{\Sigma}) = \sum_{i=1}^N (y_i - f(x_i))^\top \mathbf{\Sigma}^{-1}(y_i - f(x_i))\]</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Explain this.</p>
-</div>
-<p>arises naturally from multivariate Gaussian theory. However, it can be shown again the solution is given by Equation <span class="xref std std-ref">eq3.39</span> (Exercise 3.11). If <span class="math notranslate nohighlight">\(\mathbf{\Sigma}_i\)</span> vary among observations, then this is no longer the case and the solution for $mathbf{B}$ no longer decouples.</p>
+\[\text{RSS}(\mathbf{B}; \mathbf{\Sigma}) = \sum_{i=1}^N (y_i - f(x_i))^\top \mathbf{\Sigma}^{-1}(y_i - f(x_i))\]</div>
+<p>arises naturally from multivariate Gaussian theory. However, it can be shown again the solution is given by Equation <span class="xref std std-ref">eq3.39</span> (Exercise 3.11). If <span class="math notranslate nohighlight">\(\mathbf{\Sigma}_i\)</span> vary among observations, then this is no longer the case and the solution for <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> no longer decouples.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Add solution to Exercise 3.11.</p>
@@ -151,6 +151,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="chapter3-1.html"
                         title="previous chapter">3.1 Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="exercise-solutions.html"
+                        title="next chapter">A Solution Manual</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -178,6 +181,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="exercise-solutions.html" title="A Solution Manual"
+             >next</a> |</li>
         <li class="right" >
           <a href="chapter3-1.html" title="3.1 Introduction"
              >previous</a> |</li>
