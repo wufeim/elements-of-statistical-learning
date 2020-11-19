@@ -10,7 +10,9 @@ Notes for Elements of Statistical Learning
 About
 =====================================
 
-This is the notes for Elements of Statistical Learning by *Trevor Hastie*, *Robert Tibshirani*, and *Jerome Friedman*. Even with "some" background in machine learning and statistics, my friends and I still find it hard to understand some parts of this book. Sometimes "trivial" steps are skipped; some other contents are simply hard to understand without relevant background information. This is why we are creating this notes to share our thoughts and understandings. Additional calcuations and explanations are provided and a collaborative solution manual is made.
+This is our notes for `Elements of Statistical Learning <https://web.stanford.edu/~hastie/ElemStatLearn/>`_ by *Trevor Hastie*, *Robert Tibshirani*, and *Jerome Friedman*.
+
+Even with "some" background in machine learning and statistics, my friends and I still find it hard to understand some parts of this book. Sometimes "trivial" steps are skipped; some other contents are simply hard to understand without relevant background information. This is why we are creating this notes to share our thoughts and understandings. Additional calcuations and explanations are provided and a collaborative solution manual is made.
 
 I created an ESL study group on Douban. Come join us!
 
