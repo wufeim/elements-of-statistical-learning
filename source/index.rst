@@ -22,7 +22,7 @@ I created an ESL study group on Douban. Come join us!
 How to contribute?
 =====================================
 
-The general idea is that any comments, suggestions, or contributions are welcomed. Issues like the format of the notes or writing math equations in LaTeX should by no means be barriers to any great ideas.
+The general idea is that any comments, suggestions, or contributions are welcomed. Issues like the format of the notes or writing math equations in LaTeX should by no means be barriers to any great thinking.
 
 1. **I'd like to add a comment/provide an exercise solution/point out a mistake.**
    
