@@ -10,9 +10,9 @@ Notes for Elements of Statistical Learning
 About
 =====================================
 
-This is the notes for Elements of Statistical Learning. Contributions are welcomed and you can submit a pull request on GitHub. You could also send me an email if you would like to be added as a collaborator.
+This is the notes for Elements of Statistical Learning by *Trevor Hastie*, *Robert Tibshirani*, and *Jerome Friedman*. Even with "some" background in machine learning and statistics, my friends and I still find it hard to understand some parts of this book. Sometimes "trivial" steps are skipped; some other contents are simply hard to understand without relevant background information. This is why we are creating this notes to share our thoughts and understandings. Additional calcuations and explanations are provided and a collaborative solution manual is made.
 
-I created a ESL study group on Douban. Come join us!
+I created an ESL study group on Douban. Come join us!
 
 .. image:: images/douban.JPG
    :width: 280pt
