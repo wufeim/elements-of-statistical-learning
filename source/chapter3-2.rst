@@ -90,10 +90,10 @@ Then the expected prediction error of an estimate :math:`\tilde{f}(x_0) = x_0^\t
 
 Therefore, expected prediction error and mean squared error differ only by the constant :math:`\sigma^2`, representing the variance of the new observation :math:`y_0`.
 
-Multiple Regression from Simple Univariate Regression
+3.2.3 Multiple Regression from Simple Univariate Regression
 -------------------------------------
 
-Multiple Outputs
+3.2.4 Multiple Outputs
 -------------------------------------
 
 Suppose we have multiple outputs :math:`Y_1, \dots, Y_K` that we wish to predict from our inputs :math:`X_0, \dots, X_p`. We assume a linear model for each output
