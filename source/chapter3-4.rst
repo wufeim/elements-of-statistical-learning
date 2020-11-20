@@ -81,3 +81,33 @@ Now the ridge solutions are
 	& = \sum_{j=1}^p \mathbf{u}_j \frac{d_j^2}{d_j^2 + \lambda} \mathbf{u}_j^\top \mathbf{y}
 
 where :math:`\mathbf{u}_j` are the columns of :math:`\mathbf{U}`. Like linear regression, ridge regression computes the coordinates of :math:`\mathbf{y}` with respect to the orthogonal basis :math:`\mathbf{U}`. It then shrinks the coordinates by the factors :math:`d_j^2 / (d_j^2 + \lambda)`.
+
+A greater amount of shrinkage is applied to the coordinates of basis vectors with smaller :math:`d_j^2`. The SVD of the centered matrix :math:`\mathbf{X}` is another way of expressing the *principal components* of the variables in :math:`\mathbf{X}`. The sample covariance matrix is given by :math:`\mathbf{S} = \mathbf{X^\top X}/N`. We have
+
+.. math::
+
+  \mathbf{X^\top X} & = \mathbf{VD^\top U^\top UDV^\top} \\
+	& = \mathbf{VD}^2\mathbf{V}^\top
+
+which is the *eigne decomposition* of :math:`\mathbf{X}^\top\mathbf{X}`. The eigenvectors :math:`v_j` (columns of :math:`\mathbf{V}`) are also called the *principal components* (or Karhunen-Loeve) directions of :math:`\mathbf{X}`. The first principal component direction :math:`v_1` has the property that :math:`\mathbf{z}_1 = \mathbf{X}v_1` has the largest sample variance amongst all normalized linear combinations of the columns of :math:`\mathbf{X}`. This variance is easily seen to be
+
+.. math::
+
+  \text{Var}(\mathbf{z}_1) = \text{Var}(\mathbf{X}v_1) = \frac{d_1^2}{N}
+
+and in fact :math:`\mathbf{z}_1 = \mathbf{X}v_1 = \mathbf{u}_1d_1`. The derived variable :math:`\mathbf{z}_1` is called the first principal component of :math:`\mathbf{X}` and hence :math:`\mathbf{u}_1` is the normalized first principal component. Conversely the last principal component has *minimum* variance. Hence the small singular values :math:`d_j` correspond to directions in the column space of :math:`\mathbf{X}` having small variance, and ridge regression shrinks these directions the most.
+
+The figure below illustrates the principal components of some data points in two dimensions. The configuration of the data allow us to determine its gradient more accurately in the long direction than the short. Ridge regression protects against the potentially high variance of gradients estimated in the short direction by shrinking the coefficients of low-variance components more than the high-variance components.
+
+.. image:: images/fig3-5.png
+  :width: 320pt
+
+The *effective degrees of freedom* of the ridge regression is defined by the quantity
+
+.. math::
+
+  \text{df}(\lambda) & = \text{tr}[\mathbf{X}(\mathbf{X}^\top\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^\top] \nonumber \\
+	& = \text{tr}(\mathbf{H}_\lambda) \nonumber \\
+	& = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda}
+
+Note that :math:`\text{df}(\lambda) = p` when :math:`\lambda = 0` (no regularization) and :math:`\text{df}(\lambda) \to 0` as :math:`\lambda \to \infty`.
