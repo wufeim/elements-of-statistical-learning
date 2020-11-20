@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html lang="cn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.4 Shrinkage Methods &#8212; ESL Notes 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="A Solution Manual" href="exercise-solutions.html" />
+    <link rel="prev" title="3.3 Subset Selection" href="chapter3-3.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="exercise-solutions.html" title="A Solution Manual"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="chapter3-3.html" title="3.3 Subset Selection"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="chapter-3.html" accesskey="U">3 Linear Methods for Regression</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">3.4 Shrinkage Methods</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="shrinkage-methods">
+<h1>3.4 Shrinkage Methods<a class="headerlink" href="#shrinkage-methods" title="Permalink to this headline">¶</a></h1>
+<p>Subset selection is a discrete process -- variables are either retained or discarded -- it often exhibits high variance, and so doesn't reduce the prediction error of the full model. Shrinkage methods are more continuous, and don't suffer as much from high variability.</p>
+<div class="section" id="ridge-regression">
+<h2>3.4.1 Ridge Regression<a class="headerlink" href="#ridge-regression" title="Permalink to this headline">¶</a></h2>
+<p>Ridge regression shrinks the regression coefficients by imposing a penalty on their size. The ridge coefficients minimize a penalized residual sum of squares,</p>
+<div class="math notranslate nohighlight" id="equation-eq3-8">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq3-8" title="Permalink to this equation">¶</a></span>\[\hat{\beta}^\text{ridge} = \text{argmin}_\beta \left\{ \sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2 + \lambda \sum_{j=1}^p \beta_j^2 \right\}\]</div>
+<p>The larger the value of <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>, the greater the amount of shrinkage. The idea of penalizing by the sum-of-squares of the parameters is also used in neural networks, known as <em>weight decay</em> (Chapter 11).</p>
+<p>An equivalent way to write the ridge problem is</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta}^\text{ridge} = \text{argmin}_\beta \sum_{i=1}^N \left(y_i - \beta_0 - \sum_{i=0}^p x_{ij}\beta_j\right)^2 \;\;\; \text{s.t. } \sum_{j=1}^p \beta_j^2 \leq t\]</div>
+<p>There is a one-to-one correspondence between <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(t\)</span>. When there are many correlated variables in a linear regression model, their coefficients can become poorly determined and exhibit large variance. With ridge regression this problem can be alleviated.</p>
+<p>The ridge solutions are not equivalent under scaling of the inputs, and so one normally standardizes the inputs. It can be shown (Exercise 3.5) that the solution to Equation <a class="reference internal" href="#equation-eq3-8">(1)</a> can be separated into two parts, after reparameterization using <em>centered</em> inputs: each <span class="math notranslate nohighlight">\(x_{ij}\)</span> gets replaced by <span class="math notranslate nohighlight">\(x_{ij} - \bar{x}\)</span>. We estimate <span class="math notranslate nohighlight">\(\beta_0\)</span> by <span class="math notranslate nohighlight">\(\bar{y}\)</span>. The remaining coefficients get estimated by a ridge regression without intercept, using the centered <span class="math notranslate nohighlight">\(x_{ij}\)</span>.</p>
+<p>Writing the criterion (Equation ref{eq:eq3-8}) in matrix form</p>
+<div class="math notranslate nohighlight">
+\[\text{RSS}(\lambda) = (\mathbf{y} - \mathbf{X}\beta)^\top (\mathbf{y} - \mathbf{X}\beta) + \lambda \beta^\top\beta\]</div>
+<p>The ridge regression solutions are easily seen to be</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta}^\text{ridge} = (\mathbf{X}^\top\mathbf{X} + \lambda \mathbf{I})^{-1}\mathbf{X^\top y}\]</div>
+<p>By adding a positive constant to the diagonal of <span class="math notranslate nohighlight">\(\mathbf{X}^\top\mathbf{X}\)</span> before inversion, the problem is made nonsingular.</p>
+<p>Ridge regression can also be derived as the mean or mode of a posterior distribution, with a suitably chosen prior distribution. Suppose <span class="math notranslate nohighlight">\(y_i \sim N(\beta_0 + x_i^\top\beta, \sigma^2)\)</span>, and the parameters <span class="math notranslate nohighlight">\(\beta_j\)</span> are each distributed as <span class="math notranslate nohighlight">\(N(0, \tau^2)\)</span>, independently of one another. Then the (negative) log-posterior density of <span class="math notranslate nohighlight">\(\beta\)</span>, with <span class="math notranslate nohighlight">\(\tau^2\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span> assumed known, is equal to</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2 + \lambda \sum_{j=1}^p \beta_j^2\]</div>
+<p>with <span class="math notranslate nohighlight">\(\lambda = \sigma^2 / \tau^2\)</span> (Exercise 3.6). Thus the ridge estimate is the mode of the posterior distribution; since the distribution is Gaussian, it is also the posterior mean.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Singular Value Decomposition (SVD)</strong></p>
+<p>Singular value decomposition decomposes the <span class="math notranslate nohighlight">\(N \times p\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{X} = \mathbf{UDV}^\top \nonumber\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> are <span class="math notranslate nohighlight">\(N \times p\)</span> and <span class="math notranslate nohighlight">\(p \times p\)</span> orthogonal matrices, with the columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> spanning the column space of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and columns of <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> spanning the row space. <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> is a <span class="math notranslate nohighlight">\(p \times p\)</span> diagonal matrix, with diagonal entries <span class="math notranslate nohighlight">\(d_1 \geq \dots \geq d_p \geq 0\)</span> called the singular values of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>. If one or more values <span class="math notranslate nohighlight">\(d_j = 0\)</span>, <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is singular.</p>
+</div>
+<p>The <em>singluar value decomposition</em> (SVD) of the centered input matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> gives us some additional insight into the nature of ridge regression. We can write the least squares fitted vector as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{X}\hat{\beta}^\text{ls} &amp; = \mathbf{X}(\mathbf{X^\top X})^{-1}\mathbf{X^\top y} \nonumber \\
+      &amp; = \mathbf{UDV}^\top \mathbf{V}^{-\top}\mathbf{D}^{-1}\mathbf{D}^{-\top}\mathbf{V}^{-1} \mathbf{VD^\top U^\top y} \nonumber \\
+      &amp; = \mathbf{UU^\top y} \\
+      (\mathbf{X}^\top\mathbf{X})^{-1} &amp; = \left((\mathbf{UDV}^\top)^\top \mathbf{UDV}^\top \right)^{-1} \nonumber \\
+      &amp; = (\mathbf{VD^\top DV^\top})^{-1} \nonumber \\
+      &amp; = \mathbf{V}^{-\top}\mathbf{D}^{-1}\mathbf{D}^{-\top}\mathbf{V}^{-1} \nonumber\end{split}\]</div>
+<p>Now the ridge solutions are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{X}\hat{\beta}^\text{ridge} &amp; = \mathbf{X}(\mathbf{X}^\top\mathbf{X} + \lambda \mathbf{I})^{-1}\mathbf{X^\top y} \nonumber \\
+      &amp; = \mathbf{UDV}^\top (\mathbf{VD}^2\mathbf{V}^\top + \lambda \mathbf{VV^\top})^{-1} \mathbf{VD^\top U^\top y} \nonumber \\
+      &amp; = \mathbf{UDV}^\top \mathbf{V}^{-\top} (\mathbf{D}^2 + \lambda \mathbf{I})^{-1} \mathbf{V}^{-1} \mathbf{VD^\top U^\top y} \nonumber \\
+      &amp; = \mathbf{UD}(\mathbf{D}^2 + \lambda \mathbf{I})^{-1} \mathbf{D}\mathbf{U^\top y} \nonumber \\
+      &amp; = \sum_{j=1}^p \mathbf{u}_j \frac{d_j^2}{d_j^2 + \lambda} \mathbf{u}_j^\top \mathbf{y}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span> are the columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span>. Like linear regression, ridge regression computes the coordinates of <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> with respect to the orthogonal basis <span class="math notranslate nohighlight">\(\mathbf{U}\)</span>. It then shrinks the coordinates by the factors <span class="math notranslate nohighlight">\(d_j^2 / (d_j^2 + \lambda)\)</span>.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.4 Shrinkage Methods</a><ul>
+<li><a class="reference internal" href="#ridge-regression">3.4.1 Ridge Regression</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="chapter3-3.html"
+                        title="previous chapter">3.3 Subset Selection</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="exercise-solutions.html"
+                        title="next chapter">A Solution Manual</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/chapter3-4.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="exercise-solutions.html" title="A Solution Manual"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="chapter3-3.html" title="3.3 Subset Selection"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="chapter-3.html" >3 Linear Methods for Regression</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">3.4 Shrinkage Methods</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Mofii.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

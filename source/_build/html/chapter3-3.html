@@ -18,7 +18,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="A Solution Manual" href="exercise-solutions.html" />
+    <link rel="next" title="3.4 Shrinkage Methods" href="chapter3-4.html" />
     <link rel="prev" title="3.2 Linear Regression Models and Least Squares" href="chapter3-2.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="exercise-solutions.html" title="A Solution Manual"
+          <a href="chapter3-4.html" title="3.4 Shrinkage Methods"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="chapter3-2.html" title="3.2 Linear Regression Models and Least Squares"
@@ -49,12 +49,36 @@
 <p>There are two reasons why we are often not satisfied with the least squares estimates:</p>
 <ul class="simple">
 <li><p><strong>Prediction accuracy:</strong> The least squares estimates often have low bias but large variance. Prediction accuracy can sometimes be improved by shrinking or setting some coefficients to zero. By doing so we sacrifice a little bit of bias to reduce the variance of the predicted values.</p></li>
-<li><p><strong>Interpretation:</strong> With a large number of predictors, we often would like to determine a smaller subset that exhibit the strongest effects. In order to get the <a href="#id1"><span class="problematic" id="id2">``</span></a>big picture'', we would like to sacrifice some small details.</p></li>
+<li><p><strong>Interpretation:</strong> With a large number of predictors, we often would like to determine a smaller subset that exhibit the strongest effects. In order to get the &quot;big picture&quot;, we would like to sacrifice some small details.</p></li>
 </ul>
 <p><strong>Model selection</strong> includes variable subset selection, shrinkage and hybrid approaches. In this section, we discuss a number of approaches to variable subset selection with linear regression.</p>
 <div class="section" id="best-subset-selection">
 <h2>3.3.1 Best-Subset Selection<a class="headerlink" href="#best-subset-selection" title="Permalink to this headline">¶</a></h2>
 <p>Best subset regression finds for each <span class="math notranslate nohighlight">\(k \in \{0, 1, \dots, p\}\)</span> the subset of size <span class="math notranslate nohighlight">\(k\)</span> that gives smallest residual sum of squares. An efficient algorithm -- the <em>leaps and bounds</em> procedure -- makes this feasible for <span class="math notranslate nohighlight">\(p\)</span> as large as 30 or 40.</p>
+<p>The figure below shows all the subset models for the prostate cancer example. The question of how to choose <span class="math notranslate nohighlight">\(k\)</span> involves the tradeoff between bias and variance, along with the more subjective desire for parsimony. Typically we choose the smallest model that minimizes an estimate of the expected prediction error.</p>
+<a class="reference internal image-reference" href="_images/fig3-3.png"><img alt="_images/fig3-3.png" src="_images/fig3-3.png" style="width: 320pt;" /></a>
+</div>
+<div class="section" id="forward-and-backward-stepwise-selection">
+<h2>3.3.2 Forward- and Backward-Stepwise Selection<a class="headerlink" href="#forward-and-backward-stepwise-selection" title="Permalink to this headline">¶</a></h2>
+<p>Rather than search through all possible subsets, we can seek a good path through them. <em>Forward-stepwise selection</em> starts with the intercept, and then sequentially adds into the model the predictor that most improves the fit. Clever updating algorithms can exploit the QR decomposition for the current fit to rapidly establish the next candidate (Exercise 3.9).</p>
+<p>Forward-stepwise selection is a <em>greedy algorithm</em>, producing a nested sequence of models. It might seem sub-optimal but there are several reasons why it might be preferred:</p>
+<ul class="simple">
+<li><p><strong>Computational:</strong> For large <span class="math notranslate nohighlight">\(p\)</span> we cannot compute the best subset sequence, but we can always compute the forward stepwise sequence.</p></li>
+<li><p><strong>Statistical:</strong> Forward stepwise is a more constrained search, and will lower variance, but perhaps more bias.</p></li>
+</ul>
+<p>Backward-stepwise selection starts with the full model, and sequentially deletes the predictor that has the least impact on the fit. The candidate for dropping is the variable with the smallest Z-score (Exercise 3.10). Backward selection can only be used when <span class="math notranslate nohighlight">\(N &gt; p\)</span>, while forward selection can be used even when <span class="math notranslate nohighlight">\(p \gg N\)</span>.</p>
+<p>The figure below shows the results of a small simulation study to compare best-subset regression with forward and backward selection, along with the forward and backward stagewise regression introduced in the next section.</p>
+<a class="reference internal image-reference" href="_images/fig3-4.png"><img alt="_images/fig3-4.png" src="_images/fig3-4.png" style="width: 320pt;" /></a>
+<p>Some software packages implement hybrid stepwise-selection strategies that consider both forward and backward moves at each step, and selection the &quot;best&quot; of the two.</p>
+<p>Finally, we note that often variables come in groups, such as the dummy variables that code a multi-level categorical predictor. Smart stepwise procedures will add or drop whole groups at a time, taking proper account of their degrees-of-freedom.</p>
+</div>
+<div class="section" id="forward-stagewise-regression">
+<h2>3.3.3 Forward-Stagewise Regression<a class="headerlink" href="#forward-stagewise-regression" title="Permalink to this headline">¶</a></h2>
+<p>Forward-stagewise regression (FS) is even more constrained than forward stepwise regression. It starts with an intercept equal to <span class="math notranslate nohighlight">\(\bar{y}\)</span> and centered predictors with coefficients all 0. At each step the algorithm identifies the variable most correlated with the current residual. It then computes the simple linear regression coefficient of the residual on this chosen variable, and then adds it to the current coefficient for that variable. This is continued till none of the variables have correlation with the residuals.</p>
+<p>Forward-stagewise regression does not adjust other variables when a term is added to the model, which leads to taking many more than <span class="math notranslate nohighlight">\(p\)</span> steps to reach the least squares fit. However, it is quite competitive in very high-dimensional problems, as will be shown in Section 3.8.1.</p>
+</div>
+<div class="section" id="prostate-cancer-data-example-continued">
+<h2>3.3.4 Prostate Cancer Data Example (Continued)<a class="headerlink" href="#prostate-cancer-data-example-continued" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -69,6 +93,9 @@
   <ul>
 <li><a class="reference internal" href="#">3.3 Subset Selection</a><ul>
 <li><a class="reference internal" href="#best-subset-selection">3.3.1 Best-Subset Selection</a></li>
+<li><a class="reference internal" href="#forward-and-backward-stepwise-selection">3.3.2 Forward- and Backward-Stepwise Selection</a></li>
+<li><a class="reference internal" href="#forward-stagewise-regression">3.3.3 Forward-Stagewise Regression</a></li>
+<li><a class="reference internal" href="#prostate-cancer-data-example-continued">3.3.4 Prostate Cancer Data Example (Continued)</a></li>
 </ul>
 </li>
 </ul>
@@ -77,8 +104,8 @@
   <p class="topless"><a href="chapter3-2.html"
                         title="previous chapter">3.2 Linear Regression Models and Least Squares</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="exercise-solutions.html"
-                        title="next chapter">A Solution Manual</a></p>
+  <p class="topless"><a href="chapter3-4.html"
+                        title="next chapter">3.4 Shrinkage Methods</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -107,7 +134,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="exercise-solutions.html" title="A Solution Manual"
+          <a href="chapter3-4.html" title="3.4 Shrinkage Methods"
              >next</a> |</li>
         <li class="right" >
           <a href="chapter3-2.html" title="3.2 Linear Regression Models and Least Squares"
