@@ -1,0 +1,14 @@
+3.3 Subset Selection
+=====================================
+
+There are two reasons why we are often not satisfied with the least squares estimates:
+
+* **Prediction accuracy:** The least squares estimates often have low bias but large variance. Prediction accuracy can sometimes be improved by shrinking or setting some coefficients to zero. By doing so we sacrifice a little bit of bias to reduce the variance of the predicted values.
+* **Interpretation:** With a large number of predictors, we often would like to determine a smaller subset that exhibit the strongest effects. In order to get the ``big picture'', we would like to sacrifice some small details.
+
+**Model selection** includes variable subset selection, shrinkage and hybrid approaches. In this section, we discuss a number of approaches to variable subset selection with linear regression.
+
+3.3.1 Best-Subset Selection
+-------------------------------------
+
+Best subset regression finds for each :math:`k \in \{0, 1, \dots, p\}` the subset of size :math:`k` that gives smallest residual sum of squares. An efficient algorithm -- the *leaps and bounds* procedure -- makes this feasible for :math:`p` as large as 30 or 40.
