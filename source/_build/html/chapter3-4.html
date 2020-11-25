@@ -93,6 +93,96 @@
       &amp; = \mathbf{UD}(\mathbf{D}^2 + \lambda \mathbf{I})^{-1} \mathbf{D}\mathbf{U^\top y} \nonumber \\
       &amp; = \sum_{j=1}^p \mathbf{u}_j \frac{d_j^2}{d_j^2 + \lambda} \mathbf{u}_j^\top \mathbf{y}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span> are the columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span>. Like linear regression, ridge regression computes the coordinates of <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> with respect to the orthogonal basis <span class="math notranslate nohighlight">\(\mathbf{U}\)</span>. It then shrinks the coordinates by the factors <span class="math notranslate nohighlight">\(d_j^2 / (d_j^2 + \lambda)\)</span>.</p>
+<p>A greater amount of shrinkage is applied to the coordinates of basis vectors with smaller <span class="math notranslate nohighlight">\(d_j^2\)</span>. The SVD of the centered matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is another way of expressing the <em>principal components</em> of the variables in <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>. The sample covariance matrix is given by <span class="math notranslate nohighlight">\(\mathbf{S} = \mathbf{X^\top X}/N\)</span>. We have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{X^\top X} &amp; = \mathbf{VD^\top U^\top UDV^\top} \\
+      &amp; = \mathbf{VD}^2\mathbf{V}^\top\end{split}\]</div>
+<p>which is the <em>eigne decomposition</em> of <span class="math notranslate nohighlight">\(\mathbf{X}^\top\mathbf{X}\)</span>. The eigenvectors <span class="math notranslate nohighlight">\(v_j\)</span> (columns of <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>) are also called the <em>principal components</em> (or Karhunen-Loeve) directions of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>. The first principal component direction <span class="math notranslate nohighlight">\(v_1\)</span> has the property that <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{X}v_1\)</span> has the largest sample variance amongst all normalized linear combinations of the columns of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>. This variance is easily seen to be</p>
+<div class="math notranslate nohighlight">
+\[\text{Var}(\mathbf{z}_1) = \text{Var}(\mathbf{X}v_1) = \frac{d_1^2}{N}\]</div>
+<p>and in fact <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{X}v_1 = \mathbf{u}_1d_1\)</span>. The derived variable <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span> is called the first principal component of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and hence <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span> is the normalized first principal component. Conversely the last principal component has <em>minimum</em> variance. Hence the small singular values <span class="math notranslate nohighlight">\(d_j\)</span> correspond to directions in the column space of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> having small variance, and ridge regression shrinks these directions the most.</p>
+<p>The figure below illustrates the principal components of some data points in two dimensions. The configuration of the data allow us to determine its gradient more accurately in the long direction than the short. Ridge regression protects against the potentially high variance of gradients estimated in the short direction by shrinking the coefficients of low-variance components more than the high-variance components.</p>
+<a class="reference internal image-reference" href="_images/fig3-5.png"><img alt="_images/fig3-5.png" src="_images/fig3-5.png" style="width: 320pt;" /></a>
+<p>The <em>effective degrees of freedom</em> of the ridge regression is defined by the quantity</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{df}(\lambda) &amp; = \text{tr}[\mathbf{X}(\mathbf{X}^\top\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^\top] \nonumber \\
+      &amp; = \text{tr}(\mathbf{H}_\lambda) \nonumber \\
+      &amp; = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda}\end{split}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\text{df}(\lambda) = p\)</span> when <span class="math notranslate nohighlight">\(\lambda = 0\)</span> (no regularization) and <span class="math notranslate nohighlight">\(\text{df}(\lambda) \to 0\)</span> as <span class="math notranslate nohighlight">\(\lambda \to \infty\)</span>.</p>
+</div>
+<div class="section" id="the-lasso">
+<h2>3.4.2 The Lasso<a class="headerlink" href="#the-lasso" title="Permalink to this headline">¶</a></h2>
+<p>The Lasso estimate is defined by</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta}^\text{lasso} = \text{argmin}_\beta \sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2 \;\;\; \text{s.t. } \sum_{j=1}^p \lvert \beta_j \rvert \leq t\]</div>
+<p>In the signal processing literature, the lasso is also known as <em>basis pursuit</em>. We can also write the lasso problem in the equivalent <em>Lagrangian form</em></p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta}^\text{lasso} = \text{argmin}_\beta \left\{ \frac{1}{2}\sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2 + \lambda \sum_{j=1}^p \lvert \beta_j \rvert \right\}\]</div>
+<p>The <span class="math notranslate nohighlight">\(L_2\)</span> ridge penalty is replaced by the <span class="math notranslate nohighlight">\(L_1\)</span> lasso penalty. This latter constraint makes the solutions nonlinear in the <span class="math notranslate nohighlight">\(y_i\)</span>, and there is no closed form expression as in ridge regression.</p>
+<p>Making <span class="math notranslate nohighlight">\(t\)</span> sufficiently small will cause some of the coefficients to be exactly zero. Thus the lasso does a kind of continuous subset selection. <span class="math notranslate nohighlight">\(t\)</span> should be adaptively chosen to minimize an estimate of expected prediction error.</p>
+</div>
+<div class="section" id="discussion-subset-selection-ridge-regression-and-the-lasso">
+<h2>3.4.3 Discussion: Subset Selection, Ridge Regression and the Lasso<a class="headerlink" href="#discussion-subset-selection-ridge-regression-and-the-lasso" title="Permalink to this headline">¶</a></h2>
+<p>In the case of an orthonormal input matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> the three procedures have explicit solutions. Each method applies a simple transformation to the least squares estimate <span class="math notranslate nohighlight">\(\hat{\beta}_j\)</span>, as detailed in the table below. The effects of these transformation are visualized in the figure below.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Estimator</p></th>
+<th class="head"><p>Formula</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Best subset (size $M$)</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat{\beta}_j \cdot \mathbf{I}(\lvert \hat{\beta}_j \rvert \geq \lvert \hat{\beta}_{(M)} \rvert)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Ridge</p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat{\beta}_j / (1 + \lambda)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Lasso</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{sign}(\hat{\beta}_j)(\lvert \hat{\beta}_j \rvert - \lambda)_+\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Estimator | Formula |</div>
+</div>
+<p><a href="#id1"><span class="problematic" id="id2">|:-:|</span></a>:-:|
+| Best subset (size $M$) | $hat{beta}_j cdot mathbf{I}(lvert hat{beta}_j rvert geq lvert hat{beta}_{(M)} rvert)$ |
+| Ridge | $hat{beta}_j / (1 + lambda)$ |
+| Lasso | $text{sign}(hat{beta}_j)(lvert hat{beta}_j rvert - lambda)_+$ |</p>
+<a class="reference internal image-reference" href="_images/fig3-6.png"><img alt="_images/fig3-6.png" src="_images/fig3-6.png" style="width: 320pt;" /></a>
+<p>Ridge regression does a proportional shrinkage. Lasso translates each coefficient by a constant factor <span class="math notranslate nohighlight">\(\lambda\)</span>, truncating at zero. This is called &quot;soft thresholding&quot;. Best-subset selection drops all variables with coefficients smaller than the <span class="math notranslate nohighlight">\(M\)</span> th largest; this is a form of &quot;hard thresholding&quot;.</p>
+<p>Back to nonorthogonal case. The figure below depicts the lasso and ridge regression where there are only two parameters. Both methods find the first point where the elliptical contours hits the constraint region.</p>
+<a class="reference internal image-reference" href="_images/fig3-7.png"><img alt="_images/fig3-7.png" src="_images/fig3-7.png" style="width: 320pt;" /></a>
+<p>We can generalize ridge regression and the lasso, and view them as Bayes estimates. Consider the criterion</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\beta} = \argmin_\beta\left\{ \sum_{i=1}^N(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2 + \lambda \sum_{j=1}^p \lvert \beta_j \rvert^q \right\}\]</div>
+<p>for <span class="math notranslate nohighlight">\(q \geq 0\)</span>.</p>
+<p>Thinking of <span class="math notranslate nohighlight">\(\lvert \beta_j \rvert^q\)</span> as the log-prior density for <span class="math notranslate nohighlight">\(\beta_j\)</span>, these are also the equi-contours of the prior distribution of the parameters. The value <span class="math notranslate nohighlight">\(q = 0\)</span> corresponds to variable subset selection; <span class="math notranslate nohighlight">\(q = 1\)</span> corresponds to the lasso, while <span class="math notranslate nohighlight">\(q = 2\)</span> to ridge regression. The prior corresponding to the <span class="math notranslate nohighlight">\(q = 1\)</span> case is an independent double exponential (or Laplace) distribution for each input, with density <span class="math notranslate nohighlight">\((1/2\tau)\exp(-\lvert\beta\rvert / \tau)\)</span> and <span class="math notranslate nohighlight">\(\tau = 1/\lambda\)</span>. The case <span class="math notranslate nohighlight">\(q = 1\)</span> is the smallest <span class="math notranslate nohighlight">\(q\)</span> such that the constraint region is convex.</p>
+<p>In this view, the lasso, ridge regression, and best subset selection are Bayes estimates with different priors. Note, however, that they are derived as posterior modes, that is, maximizers of the posterior. It is more common to use the mean of the posterior as the Bayes estimate. Ridge regression is also the posterior mean, but the lasso and best subset selection are not.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Add some explanation here.</p>
+</div>
+<p>We might try using other values of $q$ besides 0, 1, or 2, such as values of <span class="math notranslate nohighlight">\(q \in (1, 2)\)</span>, which suggest a compromise between the lasso and ridge regression. However, with <span class="math notranslate nohighlight">\(q &gt; 1\)</span>, <span class="math notranslate nohighlight">\(\lvert \beta_j \rvert^q\)</span> is differentiable at 0, and would not set coefficients exactly to zero. Zou and Hastie (2005) introduced the <em>elastic-net</em> penalty</p>
+<div class="math notranslate nohighlight">
+\[\lambda\sum_{j=1}^p (\alpha\beta_j^2 + (1-\alpha)\lvert \beta_j \rvert)\]</div>
+<p>a different compromise between ridge and lasso. The elastic-net selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge. It also has considerable computational advantages over the <span class="math notranslate nohighlight">\(L_q\)</span> penalties. We discuss the elastic-net further in Section 18.4.</p>
+</div>
+<div class="section" id="least-angle-regression">
+<h2>3.4.4 Least Angle Regression<a class="headerlink" href="#least-angle-regression" title="Permalink to this headline">¶</a></h2>
+<p>Least angle regression (LAR) can be viewed as a kind of &quot;democratic&quot; version of forward stepwise regression. It uses a similar strategy, but only enters &quot;as much&quot; of a predictor as it deserves.</p>
+<p><strong>Algorithm 3.2</strong> Least Angle Regression.</p>
+<ol class="arabic simple">
+<li><p>Standardize the predictors to have mean zero and unit norm. Start with the residual <span class="math notranslate nohighlight">\(\mathbf{r} = \mathbf{y} - \bar{\mathbf{y}}\)</span>, <span class="math notranslate nohighlight">\(\beta_1, \dots, \beta_p = 0\)</span>.</p></li>
+<li><p>Find the predictor <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> most correlated with <span class="math notranslate nohighlight">\(\mathbf{r}\)</span>.</p></li>
+<li><p>Move <span class="math notranslate nohighlight">\(\beta_j\)</span> from 0 towards its least-squares coefficient <span class="math notranslate nohighlight">\(\langle \mathbf{x}_j, \mathbf{r}\rangle\)</span>, until some other competitor <span class="math notranslate nohighlight">\(\mathbf{x}_k\)</span> has as much correlation with the current residual as does <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span>.</p></li>
+<li><p>Move <span class="math notranslate nohighlight">\(\beta_j\)</span> and <span class="math notranslate nohighlight">\(\beta_k\)</span> in the direction defined by their joint least squares coefficient of the current residual on <span class="math notranslate nohighlight">\((\mathbf{x}_j, \mathbf{x}_k)\)</span>, until some other competitor <span class="math notranslate nohighlight">\(\mathbf{x}_l\)</span> has as much correlation with the current residual.</p></li>
+<li><p>Continue in this way until all <span class="math notranslate nohighlight">\(p\)</span> competitors have been entered. After <span class="math notranslate nohighlight">\(\min(N-1, p)\)</span> steps, we arrive at full least-squares solution.</p></li>
+</ol>
 </div>
 </div>
 
@@ -107,6 +197,9 @@
   <ul>
 <li><a class="reference internal" href="#">3.4 Shrinkage Methods</a><ul>
 <li><a class="reference internal" href="#ridge-regression">3.4.1 Ridge Regression</a></li>
+<li><a class="reference internal" href="#the-lasso">3.4.2 The Lasso</a></li>
+<li><a class="reference internal" href="#discussion-subset-selection-ridge-regression-and-the-lasso">3.4.3 Discussion: Subset Selection, Ridge Regression and the Lasso</a></li>
+<li><a class="reference internal" href="#least-angle-regression">3.4.4 Least Angle Regression</a></li>
 </ul>
 </li>
 </ul>

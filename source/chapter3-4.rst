@@ -111,3 +111,84 @@ The *effective degrees of freedom* of the ridge regression is defined by the qua
 	& = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda}
 
 Note that :math:`\text{df}(\lambda) = p` when :math:`\lambda = 0` (no regularization) and :math:`\text{df}(\lambda) \to 0` as :math:`\lambda \to \infty`.
+
+3.4.2 The Lasso
+-------------------------------------
+
+The Lasso estimate is defined by
+
+.. math::
+
+  \hat{\beta}^\text{lasso} = \text{argmin}_\beta \sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2 \;\;\; \text{s.t. } \sum_{j=1}^p \lvert \beta_j \rvert \leq t
+
+In the signal processing literature, the lasso is also known as *basis pursuit*. We can also write the lasso problem in the equivalent *Lagrangian form*
+
+.. math::
+
+  \hat{\beta}^\text{lasso} = \text{argmin}_\beta \left\{ \frac{1}{2}\sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2 + \lambda \sum_{j=1}^p \lvert \beta_j \rvert \right\}
+
+The :math:`L_2` ridge penalty is replaced by the :math:`L_1` lasso penalty. This latter constraint makes the solutions nonlinear in the :math:`y_i`, and there is no closed form expression as in ridge regression.
+
+Making :math:`t` sufficiently small will cause some of the coefficients to be exactly zero. Thus the lasso does a kind of continuous subset selection. :math:`t` should be adaptively chosen to minimize an estimate of expected prediction error.
+
+3.4.3 Discussion: Subset Selection, Ridge Regression and the Lasso
+-------------------------------------
+
+In the case of an orthonormal input matrix :math:`\mathbf{X}` the three procedures have explicit solutions. Each method applies a simple transformation to the least squares estimate :math:`\hat{\beta}_j`, as detailed in the table below. The effects of these transformation are visualized in the figure below.
+
++--------------------------+----------------------------------------------------------------------------------------------------------+
+| Estimator                |Formula                                                                                                   |
++==========================+==========================================================================================================+
+| Best subset (size $M$)   | :math:`\hat{\beta}_j \cdot \mathbf{I}(\lvert \hat{\beta}_j \rvert \geq \lvert \hat{\beta}_{(M)} \rvert)` |
++--------------------------+----------------------------------------------------------------------------------------------------------+
+| Ridge                    | :math:`\hat{\beta}_j / (1 + \lambda)`                                                                    |
++--------------------------+----------------------------------------------------------------------------------------------------------+
+| Lasso                    | :math:`\text{sign}(\hat{\beta}_j)(\lvert \hat{\beta}_j \rvert - \lambda)_+`                              |
++--------------------------+----------------------------------------------------------------------------------------------------------+
+
+.. image:: images/fig3-6.png
+  :width: 320pt
+
+Ridge regression does a proportional shrinkage. Lasso translates each coefficient by a constant factor :math:`\lambda`, truncating at zero. This is called "soft thresholding". Best-subset selection drops all variables with coefficients smaller than the :math:`M` th largest; this is a form of "hard thresholding".
+
+Back to nonorthogonal case. The figure below depicts the lasso and ridge regression where there are only two parameters. Both methods find the first point where the elliptical contours hits the constraint region.
+
+.. image:: images/fig3-7.png
+  :width: 320pt
+
+We can generalize ridge regression and the lasso, and view them as Bayes estimates. Consider the criterion
+
+.. math::
+
+  \tilde{\beta} = \argmin_\beta\left\{ \sum_{i=1}^N(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2 + \lambda \sum_{j=1}^p \lvert \beta_j \rvert^q \right\}
+
+for :math:`q \geq 0`.
+
+Thinking of :math:`\lvert \beta_j \rvert^q` as the log-prior density for :math:`\beta_j`, these are also the equi-contours of the prior distribution of the parameters. The value :math:`q = 0` corresponds to variable subset selection; :math:`q = 1` corresponds to the lasso, while :math:`q = 2` to ridge regression. The prior corresponding to the :math:`q = 1` case is an independent double exponential (or Laplace) distribution for each input, with density :math:`(1/2\tau)\exp(-\lvert\beta\rvert / \tau)` and :math:`\tau = 1/\lambda`. The case :math:`q = 1` is the smallest :math:`q` such that the constraint region is convex.
+
+In this view, the lasso, ridge regression, and best subset selection are Bayes estimates with different priors. Note, however, that they are derived as posterior modes, that is, maximizers of the posterior. It is more common to use the mean of the posterior as the Bayes estimate. Ridge regression is also the posterior mean, but the lasso and best subset selection are not.
+
+.. warning::
+
+  Add some explanation here.
+
+We might try using other values of $q$ besides 0, 1, or 2, such as values of :math:`q \in (1, 2)`, which suggest a compromise between the lasso and ridge regression. However, with :math:`q > 1`, :math:`\lvert \beta_j \rvert^q` is differentiable at 0, and would not set coefficients exactly to zero. Zou and Hastie (2005) introduced the *elastic-net* penalty
+
+.. math::
+
+  \lambda\sum_{j=1}^p (\alpha\beta_j^2 + (1-\alpha)\lvert \beta_j \rvert)
+
+a different compromise between ridge and lasso. The elastic-net selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge. It also has considerable computational advantages over the :math:`L_q` penalties. We discuss the elastic-net further in Section 18.4.
+
+3.4.4 Least Angle Regression
+-------------------------------------
+
+Least angle regression (LAR) can be viewed as a kind of "democratic" version of forward stepwise regression. It uses a similar strategy, but only enters "as much" of a predictor as it deserves.
+
+**Algorithm 3.2** Least Angle Regression.
+
+1. Standardize the predictors to have mean zero and unit norm. Start with the residual :math:`\mathbf{r} = \mathbf{y} - \bar{\mathbf{y}}`, :math:`\beta_1, \dots, \beta_p = 0`.
+2. Find the predictor :math:`\mathbf{x}_j` most correlated with :math:`\mathbf{r}`.
+3. Move :math:`\beta_j` from 0 towards its least-squares coefficient :math:`\langle \mathbf{x}_j, \mathbf{r}\rangle`, until some other competitor :math:`\mathbf{x}_k` has as much correlation with the current residual as does :math:`\mathbf{x}_j`.
+4. Move :math:`\beta_j` and :math:`\beta_k` in the direction defined by their joint least squares coefficient of the current residual on :math:`(\mathbf{x}_j, \mathbf{x}_k)`, until some other competitor :math:`\mathbf{x}_l` has as much correlation with the current residual.
+5. Continue in this way until all :math:`p` competitors have been entered. After :math:`\min(N-1, p)` steps, we arrive at full least-squares solution.
