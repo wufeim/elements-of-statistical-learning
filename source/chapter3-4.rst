@@ -139,7 +139,7 @@ In the case of an orthonormal input matrix :math:`\mathbf{X}` the three procedur
 +--------------------------+----------------------------------------------------------------------------------------------------------+
 | Estimator                |Formula                                                                                                   |
 +==========================+==========================================================================================================+
-| Best subset (size $M$)   | :math:`\hat{\beta}_j \cdot \mathbf{I}(\lvert \hat{\beta}_j \rvert \geq \lvert \hat{\beta}_{(M)} \rvert)` |
+| Best subset (size :math:`M`)   | :math:`\hat{\beta}_j \cdot \mathbf{I}(\lvert \hat{\beta}_j \rvert \geq \lvert \hat{\beta}_{(M)} \rvert)` |
 +--------------------------+----------------------------------------------------------------------------------------------------------+
 | Ridge                    | :math:`\hat{\beta}_j / (1 + \lambda)`                                                                    |
 +--------------------------+----------------------------------------------------------------------------------------------------------+
@@ -160,7 +160,7 @@ We can generalize ridge regression and the lasso, and view them as Bayes estimat
 
 .. math::
 
-  \tilde{\beta} = \argmin_\beta\left\{ \sum_{i=1}^N(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2 + \lambda \sum_{j=1}^p \lvert \beta_j \rvert^q \right\}
+  \tilde{\beta} = \text{argmin}_\beta\left\{ \sum_{i=1}^N(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2 + \lambda \sum_{j=1}^p \lvert \beta_j \rvert^q \right\}
 
 for :math:`q \geq 0`.
 
@@ -170,9 +170,9 @@ In this view, the lasso, ridge regression, and best subset selection are Bayes e
 
 .. warning::
 
-  Add some explanation here.
+  Add some explanations here.
 
-We might try using other values of $q$ besides 0, 1, or 2, such as values of :math:`q \in (1, 2)`, which suggest a compromise between the lasso and ridge regression. However, with :math:`q > 1`, :math:`\lvert \beta_j \rvert^q` is differentiable at 0, and would not set coefficients exactly to zero. Zou and Hastie (2005) introduced the *elastic-net* penalty
+We might try using other values of :math:`q` besides 0, 1, or 2, such as values of :math:`q \in (1, 2)`, which suggest a compromise between the lasso and ridge regression. However, with :math:`q > 1`, :math:`\lvert \beta_j \rvert^q` is differentiable at 0, and would not set coefficients exactly to zero. Zou and Hastie (2005) introduced the *elastic-net* penalty
 
 .. math::
 
@@ -192,3 +192,7 @@ Least angle regression (LAR) can be viewed as a kind of "democratic" version of 
 3. Move :math:`\beta_j` from 0 towards its least-squares coefficient :math:`\langle \mathbf{x}_j, \mathbf{r}\rangle`, until some other competitor :math:`\mathbf{x}_k` has as much correlation with the current residual as does :math:`\mathbf{x}_j`.
 4. Move :math:`\beta_j` and :math:`\beta_k` in the direction defined by their joint least squares coefficient of the current residual on :math:`(\mathbf{x}_j, \mathbf{x}_k)`, until some other competitor :math:`\mathbf{x}_l` has as much correlation with the current residual.
 5. Continue in this way until all :math:`p` competitors have been entered. After :math:`\min(N-1, p)` steps, we arrive at full least-squares solution.
+
+.. warning::
+
+  Section not completed.

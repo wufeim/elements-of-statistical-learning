@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+
+<html lang="cn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.5 Methods Using Derived Input Directions &#8212; ESL Notes 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">3.5 Methods Using Derived Input Directions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="methods-using-derived-input-directions">
+<h1>3.5 Methods Using Derived Input Directions<a class="headerlink" href="#methods-using-derived-input-directions" title="Permalink to this headline">¶</a></h1>
+<p>The methods in this section produce a small number of linear combinations <span class="math notranslate nohighlight">\(Z_m\)</span>, <span class="math notranslate nohighlight">\(m = 1, \dots, M\)</span> of a large number of correlated inputs <span class="math notranslate nohighlight">\(X_j\)</span>, and the <span class="math notranslate nohighlight">\(Z_m\)</span> are then used in place of the <span class="math notranslate nohighlight">\(X_j\)</span> as inputs in the regression.</p>
+<div class="section" id="principal-components-regression">
+<h2>3.5.1 Principal Components Regression<a class="headerlink" href="#principal-components-regression" title="Permalink to this headline">¶</a></h2>
+<p>In this approach the linear combinations <span class="math notranslate nohighlight">\(Z_m\)</span> used are the principal components defined in Section 3.4.1. Principal components regression (PCR) depend on the scaling of the inputs, so typically we first standardize them. Since the <span class="math notranslate nohighlight">\(\mathbf{z}_m\)</span> are orthogonal, the regression is just a sum of univariate regressions:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\mathbf{y}}_{(M)}^\text{pcr} = \bar{y}\mathbf{1} + \sum_{m=1}^M \hat{\theta}_m\mathbf{z}_m, \;\;\; \hat{\theta}_m = \frac{\langle \mathbf{z}_m, \mathbf{y} \rangle}{\langle \mathbf{z}_m, \mathbf{z}_m \rangle}\]</div>
+<p>This solution can also be expressed in terms of the <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> (Exercise 3.13) where</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta}^\text{pcr}(M) = \sum_{m=1}^M \hat{\theta}_mv_m\]</div>
+<p>For <span class="math notranslate nohighlight">\(M &lt; p\)</span> we get a reduced regression. PCR is very similar to ridge regression: both operate via the principal components of the input matrix. Ridge regression shrinks the coefficients of the principal components, while PCR discards the <span class="math notranslate nohighlight">\(p - M\)</span> components, as depicted in the figure below.</p>
+<a class="reference internal image-reference" href="_images/fig3-8.png"><img alt="_images/fig3-8.png" src="_images/fig3-8.png" style="width: 320pt;" /></a>
+</div>
+<div class="section" id="partial-least-squares">
+<h2>3.5.2 Partial Least Squares<a class="headerlink" href="#partial-least-squares" title="Permalink to this headline">¶</a></h2>
+<p>Partial least squares (PLS) is not scale invariant, so we assume that each <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> is standardized to have mean 0 and variance 1.</p>
+<div class="line-block">
+<div class="line"><strong>Algorithm 3.3</strong> <em>Partial Least Squares.</em></div>
+<div class="line">1. Standardize each <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> to have mean zero and variance one. Set <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}^{(0)} = \bar{y}\mathbf{1}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{x}_j^{(0)} = \mathbf{x}_j$, $j = 1, \dots, p\)</span>.</div>
+<div class="line">2. For <span class="math notranslate nohighlight">\(m = 1, \dots, p\)</span></div>
+<div class="line-block">
+<div class="line">(a) <span class="math notranslate nohighlight">\(\mathbf{z}_m = \sum_{j=1}^p \hat{\phi}_{mj}\mathbf{x}_j^{(m-1)}\)</span>, where <span class="math notranslate nohighlight">\(\hat{\phi}_{mj} = \langle \mathbf{x}_j^{(m-1)}, \mathbf{y}\rangle\)</span>.</div>
+<div class="line">(b) <span class="math notranslate nohighlight">\(\hat{\theta}_m = \langle \mathbf{z}_m, \mathbf{y} \rangle/\langle \mathbf{z}_m, \mathbf{z}_m\rangle\)</span>.</div>
+<div class="line">(c) <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}^{(m)} = \hat{\mathbf{y}}^{(m-1)} + \hat{\theta}_m\mathbf{z}_m\)</span>.</div>
+<div class="line">(d) <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}^{(m)} = \hat{\mathbf{y}}^{(m-1)} + \hat{\theta}_m\mathbf{z}_m\)</span>.</div>
+<div class="line">(e) Orthogonalize each <span class="math notranslate nohighlight">\(\mathbf{x}_j^{(m-1)}\)</span> with respect to <span class="math notranslate nohighlight">\(\mathbf{z}_m\)</span>: <span class="math notranslate nohighlight">\(\mathbf{x}_j^{(m)} = \mathbf{x}_j^{(m-1)} - [\langle \mathbf{z}_m, \mathbf{x}_j^{(m-1)}\rangle / \langle \mathbf{z}_m, \mathbf{z}_m \rangle]\mathbf{z}_m\)</span>, <span class="math notranslate nohighlight">\(j = 1, \dots, p\)</span>.</div>
+</div>
+<div class="line">3. Output the sequence of fitted vectors <span class="math notranslate nohighlight">\(\{\hat{\mathbf{y}}^{(m)}\}_1^p\)</span>. Since the <span class="math notranslate nohighlight">\(\{\mathbf{z}_l\}_1^m\)</span> are linear in the original <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span>, so is <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}^{(m)} = \mathbf{X}\hat{\beta}^\text{pls}(m)\)</span>. These linear coefficients can be recovered from the sequence of PLS transformations.</div>
+</div>
+<p>What optimization problem is PLS solving? It can be shown (Exercise 3.15) that PLS seeks directions that have high variance and have high correlation with the response, in contrast to PCR which keys only on high variance. In particular, the <span class="math notranslate nohighlight">\(m\)</span> th principal component direction <span class="math notranslate nohighlight">\(v_m\)</span> solves:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\max_\alpha \; &amp; \text{Var}(\mathbf{X}\alpha) \\
+      \text{subject to} \; &amp; \lVert \alpha \rVert = 1, \; \alpha^\top \mathbf{S}v_l = 0, \; l = 1, \dots, m-1\end{split}\]</div>
+<p>where $mathbf{S}$ is the sample covariance matrix of the $mathbf{x}_j$. The conditions $alpha^top mathbf{S}v_l = 0$ ensures that $mathbf{z}_m = mathbf{X}alpha$ is uncorrelated with all the previous linear combinations $mathbf{z}_l = mathbf{X}v_l$. The $m$th PLS direction $hat{phi}_m$ solves:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\max_\alpha \; &amp; \text{Corr}^2 (\mathbf{y}, \mathbf{X}\alpha)\text{Var}(\mathbf{X}\alpha) \\
+      \text{subject to} \; &amp; \lVert \alpha \rVert = 1, \; \alpha^\top \mathbf{S}\hat{\phi}_l = 0, \; l = 1, \dots, m-1\end{split}\]</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.5 Methods Using Derived Input Directions</a><ul>
+<li><a class="reference internal" href="#principal-components-regression">3.5.1 Principal Components Regression</a></li>
+<li><a class="reference internal" href="#partial-least-squares">3.5.2 Partial Least Squares</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/chapter3-5.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">3.5 Methods Using Derived Input Directions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Mofii.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>
