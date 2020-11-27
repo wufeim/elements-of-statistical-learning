@@ -13,11 +13,11 @@ Typically we have a set of training data :math:`(x_1, y_1), \dots, (x_N, y_N)` f
 
 .. math::
 
-  \text{RSS}(\beta) = \sum_{i=1}^N (y_i - f(x_i))^2 = \sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2
+  \text{RSS}(\beta) = \sum_{i=1}^N (y_i - f(x_i))^2 = \sum_{i=1}^N \left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2
 
-From a statistical point of view, this criterion is reasonable if the training observations $(x_i, y_i)$ represent independent draws from their population. Even if the :math:`x_i`'s were not drawn randomly, the criterion is still valid if the :math:`y_i`'s are conditionally independent given the inputs :math:`x_i`.
+From a statistical point of view, this criterion is reasonable if the training observations :math:`(x_i, y_i)` represent independent draws from their population. Even if the :math:`x_i`'s were not drawn randomly, the criterion is still valid if the :math:`y_i`'s are conditionally independent given the inputs :math:`x_i`.
 
-Let :math:`\mathbf{X}` and :math:`\mathbf{y}` be the matrix representation of the training data. We can write the residual sum-of-squares as
+Let :math:`\mathbf{X}_{N \times (p+1)}` and :math:`\mathbf{y}_{N \times 1}` be the matrix representation of the training data. We can write the residual sum-of-squares as
 
 .. math::
 
@@ -29,6 +29,29 @@ Differentiating w.r.t. :math:`\beta` we obtain
 
   \frac{\partial \text{RSS}}{\partial \beta} & = -2\mathbf{X}^\top (\mathbf{y} - \mathbf{X}\beta) \\
   \frac{\partial^2 \text{RSS}}{\partial\beta\partial\beta^\top} & = 2\mathbf{X}^\top\mathbf{X}
+
+Assuming that :math:`\mathbf{X}` has full rank, and hence :math:`\mathbf{X}^\top\mathbf{X}` is positive definite, we set the first derivative to zero
+
+.. math::
+
+  \mathbf{X}^\top (\mathbf{y} - \mathbf{X}\beta) = 0 \label{eq:eq3-1}
+
+to obtain the unique solution
+
+.. math::
+  :label: eq3-6
+
+  \hat{\beta} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}
+
+The fitted values at the training inputs are
+
+.. math::
+
+  \hat{\mathbf{y}} = \mathbf{X}\hat{\beta} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}
+
+The matrix :math:`\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top` is sometimes called the "hat" matrix because it puts the hat on :math:`\mathbf{y}`.
+
+The figure below shows a different geometrical representation of the least squares estimate in :math:`\mathbb{R}^N`. We minimize :math:`\text{RSS}(\beta)` by choosing :math:`\hat{\beta}` so that the residual error :math:`\mathbf{y} - \hat{\mathbf{y}}` is orthogonal to the column space of :math:`\mathbf{X}`. The orthogonality is expressed in Equation :eq:`eq3-6`, and the resulting estimate :math:`\hat{\mathbf{y}}` is the *orthogonal projection* of :math:`\mathbf{y}` onto this subspace. The hat matrix :math:`\mathbf{H}` computes the orthogonal projection, and hence it is also known as a projection matrix.
 
 3.2.1 Example: Prostate Cancer
 -------------------------------------

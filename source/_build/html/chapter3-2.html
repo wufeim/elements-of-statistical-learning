@@ -52,7 +52,7 @@
 <p>Here <span class="math notranslate nohighlight">\(X_j\)</span> can be quantitative inputs, transformations of quantitative inputs, or numerical encoding of qualitative inputs.</p>
 <p>Typically we have a set of training data <span class="math notranslate nohighlight">\((x_1, y_1), \dots, (x_N, y_N)\)</span> from which to estimate the parameters :math`beta`. The most popular estimation method is <em>least squares</em>, in which we pick the coefficients <span class="math notranslate nohighlight">\(\beta = (\beta_0, \dots, \beta_p)^\top\)</span> to minimize the residual sum of squares</p>
 <div class="math notranslate nohighlight">
-\[\text{RSS}(\beta) = \sum_{i=1}^N (y_i - f(x_i))^2 = \sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2\]</div>
+\[\text{RSS}(\beta) = \sum_{i=1}^N (y_i - f(x_i))^2 = \sum_{i=1}^N \left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2\]</div>
 <p>From a statistical point of view, this criterion is reasonable if the training observations $(x_i, y_i)$ represent independent draws from their population. Even if the <span class="math notranslate nohighlight">\(x_i\)</span>'s were not drawn randomly, the criterion is still valid if the <span class="math notranslate nohighlight">\(y_i\)</span>'s are conditionally independent given the inputs <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> be the matrix representation of the training data. We can write the residual sum-of-squares as</p>
 <div class="math notranslate nohighlight">

@@ -13,7 +13,7 @@ Typically we have a set of training data :math:`(x_1, y_1), \dots, (x_N, y_N)` f
 
 .. math::
 
-  \text{RSS}(\beta) = \sum_{i=1}^N (y_i - f(x_i))^2 = \sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j)^2
+  \text{RSS}(\beta) = \sum_{i=1}^N (y_i - f(x_i))^2 = \sum_{i=1}^N \left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2
 
 From a statistical point of view, this criterion is reasonable if the training observations $(x_i, y_i)$ represent independent draws from their population. Even if the :math:`x_i`'s were not drawn randomly, the criterion is still valid if the :math:`y_i`'s are conditionally independent given the inputs :math:`x_i`.
 

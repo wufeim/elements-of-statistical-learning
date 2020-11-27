@@ -17,7 +17,9 @@
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="A Solution Manual" href="exercise-solutions.html" />
+    <link rel="prev" title="3.4 Shrinkage Methods" href="chapter3-4.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -25,7 +27,14 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="exercise-solutions.html" title="A Solution Manual"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="chapter3-4.html" title="3.4 Shrinkage Methods"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="chapter-3.html" accesskey="U">3 Linear Methods for Regression</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">3.5 Methods Using Derived Input Directions</a></li> 
       </ul>
     </div>  
@@ -54,7 +63,8 @@
 <p>Partial least squares (PLS) is not scale invariant, so we assume that each <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> is standardized to have mean 0 and variance 1.</p>
 <div class="line-block">
 <div class="line"><strong>Algorithm 3.3</strong> <em>Partial Least Squares.</em></div>
-<div class="line">1. Standardize each <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> to have mean zero and variance one. Set <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}^{(0)} = \bar{y}\mathbf{1}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{x}_j^{(0)} = \mathbf{x}_j$, $j = 1, \dots, p\)</span>.</div>
+<div class="line-block">
+<div class="line">1. Standardize each <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> to have mean zero and variance one. Set <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}^{(0)} = \bar{y}\mathbf{1}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{x}_j^{(0)} = \mathbf{x}_j\)</span>, <span class="math notranslate nohighlight">\(j = 1, \dots, p\)</span>.</div>
 <div class="line">2. For <span class="math notranslate nohighlight">\(m = 1, \dots, p\)</span></div>
 <div class="line-block">
 <div class="line">(a) <span class="math notranslate nohighlight">\(\mathbf{z}_m = \sum_{j=1}^p \hat{\phi}_{mj}\mathbf{x}_j^{(m-1)}\)</span>, where <span class="math notranslate nohighlight">\(\hat{\phi}_{mj} = \langle \mathbf{x}_j^{(m-1)}, \mathbf{y}\rangle\)</span>.</div>
@@ -65,14 +75,25 @@
 </div>
 <div class="line">3. Output the sequence of fitted vectors <span class="math notranslate nohighlight">\(\{\hat{\mathbf{y}}^{(m)}\}_1^p\)</span>. Since the <span class="math notranslate nohighlight">\(\{\mathbf{z}_l\}_1^m\)</span> are linear in the original <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span>, so is <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}^{(m)} = \mathbf{X}\hat{\beta}^\text{pls}(m)\)</span>. These linear coefficients can be recovered from the sequence of PLS transformations.</div>
 </div>
+</div>
 <p>What optimization problem is PLS solving? It can be shown (Exercise 3.15) that PLS seeks directions that have high variance and have high correlation with the response, in contrast to PCR which keys only on high variance. In particular, the <span class="math notranslate nohighlight">\(m\)</span> th principal component direction <span class="math notranslate nohighlight">\(v_m\)</span> solves:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\max_\alpha \; &amp; \text{Var}(\mathbf{X}\alpha) \\
       \text{subject to} \; &amp; \lVert \alpha \rVert = 1, \; \alpha^\top \mathbf{S}v_l = 0, \; l = 1, \dots, m-1\end{split}\]</div>
-<p>where $mathbf{S}$ is the sample covariance matrix of the $mathbf{x}_j$. The conditions $alpha^top mathbf{S}v_l = 0$ ensures that $mathbf{z}_m = mathbf{X}alpha$ is uncorrelated with all the previous linear combinations $mathbf{z}_l = mathbf{X}v_l$. The $m$th PLS direction $hat{phi}_m$ solves:</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{S}\)</span> is the sample covariance matrix of the <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span>. The conditions <span class="math notranslate nohighlight">\(\alpha^\top \mathbf{S}v_l = 0\)</span> ensures that <span class="math notranslate nohighlight">\(\mathbf{z}_m = \mathbf{X}\alpha\)</span> is uncorrelated with all the previous linear combinations <span class="math notranslate nohighlight">\(\mathbf{z}_l = \mathbf{X}v_l\)</span>. The <span class="math notranslate nohighlight">\(m\)</span>hat{phi}_m` solves:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\max_\alpha \; &amp; \text{Corr}^2 (\mathbf{y}, \mathbf{X}\alpha)\text{Var}(\mathbf{X}\alpha) \\
       \text{subject to} \; &amp; \lVert \alpha \rVert = 1, \; \alpha^\top \mathbf{S}\hat{\phi}_l = 0, \; l = 1, \dots, m-1\end{split}\]</div>
+<p>Further analysis reveals that the variance aspect tends to dominate, and so PLS behaves much like ridge regression and PCR.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Add some explanations here.</p>
+</div>
+<p>If the input matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is orthogonal, then PLS finds the least squares estimates after <span class="math notranslate nohighlight">\(m = 1\)</span> steps. Subsequent steps have no effect since <span class="math notranslate nohighlight">\(\hat{\phi}_{mj}\)</span> are zero for <span class="math notranslate nohighlight">\(m &gt; 1\)</span> (Exercise 3.14). It can also be shown that the sequence of PLS coefficients for <span class="math notranslate nohighlight">\(m = 1, \dots, p\)</span> represents the conjugate gradient sequence for computing the least squares solutions (Exercise 3.18).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Add solutions to Exercise 3.14 and Exercise 3.18.</p>
+</div>
 </div>
 </div>
 
@@ -92,6 +113,12 @@
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="chapter3-4.html"
+                        title="previous chapter">3.4 Shrinkage Methods</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="exercise-solutions.html"
+                        title="next chapter">A Solution Manual</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -119,7 +146,14 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="exercise-solutions.html" title="A Solution Manual"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="chapter3-4.html" title="3.4 Shrinkage Methods"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="chapter-3.html" >3 Linear Methods for Regression</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">3.5 Methods Using Derived Input Directions</a></li> 
       </ul>
     </div>
