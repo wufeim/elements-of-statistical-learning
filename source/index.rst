@@ -5,6 +5,7 @@ Notes for Elements of Statistical Learning
    :maxdepth: 2
 
    chapter-3
+   chapter-4
    exercise-solutions
 
 About
