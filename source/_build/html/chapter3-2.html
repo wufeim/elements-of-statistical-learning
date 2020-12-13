@@ -6,16 +6,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3.2 Linear Regression Models and Least Squares &#8212; ESL Notes 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="3.3 Subset Selection" href="chapter3-3.html" />
@@ -53,14 +51,25 @@
 <p>Typically we have a set of training data <span class="math notranslate nohighlight">\((x_1, y_1), \dots, (x_N, y_N)\)</span> from which to estimate the parameters :math`beta`. The most popular estimation method is <em>least squares</em>, in which we pick the coefficients <span class="math notranslate nohighlight">\(\beta = (\beta_0, \dots, \beta_p)^\top\)</span> to minimize the residual sum of squares</p>
 <div class="math notranslate nohighlight">
 \[\text{RSS}(\beta) = \sum_{i=1}^N (y_i - f(x_i))^2 = \sum_{i=1}^N \left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2\]</div>
-<p>From a statistical point of view, this criterion is reasonable if the training observations $(x_i, y_i)$ represent independent draws from their population. Even if the <span class="math notranslate nohighlight">\(x_i\)</span>'s were not drawn randomly, the criterion is still valid if the <span class="math notranslate nohighlight">\(y_i\)</span>'s are conditionally independent given the inputs <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
-<p>Let <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> be the matrix representation of the training data. We can write the residual sum-of-squares as</p>
+<p>From a statistical point of view, this criterion is reasonable if the training observations <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> represent independent draws from their population. Even if the <span class="math notranslate nohighlight">\(x_i\)</span>'s were not drawn randomly, the criterion is still valid if the <span class="math notranslate nohighlight">\(y_i\)</span>'s are conditionally independent given the inputs <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{X}_{N \times (p+1)}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_{N \times 1}\)</span> be the matrix representation of the training data. We can write the residual sum-of-squares as</p>
 <div class="math notranslate nohighlight">
 \[RSS(\beta) = (\mathbf{y} - \mathbf{X}\beta)^\top (\mathbf{y} - \mathbf{X}\beta)\]</div>
 <p>Differentiating w.r.t. <span class="math notranslate nohighlight">\(\beta\)</span> we obtain</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\frac{\partial \text{RSS}}{\partial \beta} &amp; = -2\mathbf{X}^\top (\mathbf{y} - \mathbf{X}\beta) \\
 \frac{\partial^2 \text{RSS}}{\partial\beta\partial\beta^\top} &amp; = 2\mathbf{X}^\top\mathbf{X}\end{split}\]</div>
+<p>Assuming that <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> has full rank, and hence <span class="math notranslate nohighlight">\(\mathbf{X}^\top\mathbf{X}\)</span> is positive definite, we set the first derivative to zero</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{X}^\top (\mathbf{y} - \mathbf{X}\beta) = 0 \label{eq:eq3-1}\]</div>
+<p>to obtain the unique solution</p>
+<div class="math notranslate nohighlight" id="equation-eq3-6">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq3-6" title="Permalink to this equation">¶</a></span>\[\hat{\beta} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}\]</div>
+<p>The fitted values at the training inputs are</p>
+<div class="math notranslate nohighlight">
+\[\hat{\mathbf{y}} = \mathbf{X}\hat{\beta} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\)</span> is sometimes called the &quot;hat&quot; matrix because it puts the hat on <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>.</p>
+<p>The figure below shows a different geometrical representation of the least squares estimate in <span class="math notranslate nohighlight">\(\mathbb{R}^N\)</span>. We minimize <span class="math notranslate nohighlight">\(\text{RSS}(\beta)\)</span> by choosing <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> so that the residual error <span class="math notranslate nohighlight">\(\mathbf{y} - \hat{\mathbf{y}}\)</span> is orthogonal to the column space of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>. The orthogonality is expressed in Equation <a class="reference internal" href="#equation-eq3-6">(1)</a>, and the resulting estimate <span class="math notranslate nohighlight">\(\hat{\mathbf{y}}\)</span> is the <em>orthogonal projection</em> of <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> onto this subspace. The hat matrix <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> computes the orthogonal projection, and hence it is also known as a projection matrix.</p>
 <div class="section" id="example-prostate-cancer">
 <h2>3.2.1 Example: Prostate Cancer<a class="headerlink" href="#example-prostate-cancer" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -117,7 +126,7 @@
       &amp; = \text{tr}[(\mathbf{Y} - \mathbf{XB})^\top (\mathbf{Y} - \mathbf{XB})]\end{split}\]</div>
 <p>The least squares estimates have the same form as before</p>
 <div class="math notranslate nohighlight" id="equation-eq3-39">
-<span class="eqno">(1)<a class="headerlink" href="#equation-eq3-39" title="Permalink to this equation">¶</a></span>\[\hat{\mathbf{B}} = (\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X^\top Y}\]</div>
+<span class="eqno">(2)<a class="headerlink" href="#equation-eq3-39" title="Permalink to this equation">¶</a></span>\[\hat{\mathbf{B}} = (\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X^\top Y}\]</div>
 <p>Multiple outputs do not affect one another's least squares estimates.</p>
 <p>If the errors <span class="math notranslate nohighlight">\(\varepsilon = (\varepsilon_1, \dots, \varepsilon_K)\)</span> are correlated, then it might seem appropriate to modify RSS in favor of a multivariate version. Specifically, suppose <span class="math notranslate nohighlight">\(\text{Cov}(\varepsilon) = \mathbf{\Sigma}\)</span>, then the multivariate weighted criterion</p>
 <div class="math notranslate nohighlight">

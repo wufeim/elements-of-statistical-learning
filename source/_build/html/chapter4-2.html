@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 3 &#8212; ESL Notes 0.1 documentation</title>
+    <title>4.2 Linear Regression of an Indicator Matrix &#8212; ESL Notes 0.1 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -15,8 +15,7 @@
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="A Solution Manual" href="exercise-solutions.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -24,12 +23,8 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="exercise-solutions.html" title="A Solution Manual"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="exercise-solutions.html" accesskey="U">A Solution Manual</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Chapter 3</a></li> 
+        <li class="nav-item nav-item-this"><a href="">4.2 Linear Regression of an Indicator Matrix</a></li> 
       </ul>
     </div>  
 
@@ -38,15 +33,12 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="chapter-3">
-<h1>Chapter 3<a class="headerlink" href="#chapter-3" title="Permalink to this headline">¶</a></h1>
-<p><strong>Exercise 3.11.</strong> Show that the solution to the multivariate linear regression problem</p>
+  <div class="section" id="linear-regression-of-an-indicator-matrix">
+<h1>4.2 Linear Regression of an Indicator Matrix<a class="headerlink" href="#linear-regression-of-an-indicator-matrix" title="Permalink to this headline">¶</a></h1>
+<p>Suppose <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> has <span class="math notranslate nohighlight">\(K\)</span> classes, each response category is associated with an indicator <span class="math notranslate nohighlight">\(Y_k\)</span> with <span class="math notranslate nohighlight">\(Y_k = 1\)</span> if <span class="math notranslate nohighlight">\(G = k\)</span> else <span class="math notranslate nohighlight">\(0\)</span>. These are collected together in a vector <span class="math notranslate nohighlight">\(Y = (Y_1, \dots, Y_k)\)</span>, and the <span class="math notranslate nohighlight">\(N\)</span> training instances of these form an <span class="math notranslate nohighlight">\(N \times K\)</span> <strong>indicator response matrix</strong> <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span>. We fit a regression model to each of the columns of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> simultaneously, and the fit is given by</p>
 <div class="math notranslate nohighlight">
-\[\text{RSS}(\mathbf{B}; \mathbf{\Sigma}) = \sum_{i=1}^N (y_i - f(x_i))^\top \mathbf{\Sigma}^{-1}(y_i - f(x_i))\]</div>
-<p>is given by</p>
-<div class="math notranslate nohighlight">
-\[\hat{\mathbf{B}} = (\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X^\top Y}\]</div>
-<p>What happens if the covariance matrices <span class="math notranslate nohighlight">\(\mathbf{\Sigma}_i\)</span> are different for each observation?</p>
+\[\hat{\mathbf{Y}} = \mathbf{X}(\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X}^\top\mathbf{Y}\]</div>
+<p>From which we obtain the <span class="math notranslate nohighlight">\((p+1) \times K\)</span> coefficient matrix <span class="math notranslate nohighlight">\(\hat{\mathbf{B}} = (\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X}^\top\mathbf{Y}\)</span>. A new observation with input <span class="math notranslate nohighlight">\(x\)</span> is classified by first computing the fitted output <span class="math notranslate nohighlight">\(\hat{f}(x)^\top = (1, x^\top)\hat{\mathbf{B}}\)</span> and then predicting the category by identifying the largest component: <span class="math notranslate nohighlight">\(\hat{G}(x) = \text{argmax}_{k \in \mathcal{G}}\hat{f}_k(x)\)</span>.</p>
 </div>
 
 
@@ -56,13 +48,10 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="exercise-solutions.html"
-                        title="previous chapter">A Solution Manual</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/sol-3.rst.txt"
+      <li><a href="_sources/chapter4-2.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -86,12 +75,8 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="exercise-solutions.html" title="A Solution Manual"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">ESL Notes 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="exercise-solutions.html" >A Solution Manual</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Chapter 3</a></li> 
+        <li class="nav-item nav-item-this"><a href="">4.2 Linear Regression of an Indicator Matrix</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
